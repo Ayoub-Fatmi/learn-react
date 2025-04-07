@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "../App";
 import { BrowserRouter } from "react-router-dom";
-import { Product } from "../types/Product";
+import Product from "../types/Product";
 
 // Mock the Header and ProductList components to simplify testing
 vi.mock("../components/Header", () => ({
