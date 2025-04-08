@@ -1,13 +1,16 @@
 import { useState } from "react";
 import Product from "./types/Product";
+import CartItem from "./types/CartItem";
 import Header from "./components/Header";
 import ProductList from "./components/ProductList";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const mockProducts : Product[] = [
   {
     "id": "1",
     "name": "React T-Shirt",
-    "description": "Show your love for React with this comfy tee.",
+    "description": "Show your love for React with this comfy tee.Show your love for React with this comfy tee.Show your love for React with this comfy tee.Show your love for React with this comfy tee.Show your love for React with this comfy tee.",
     "price": 24.99,
     "imageUrl": "https://m.media-amazon.com/images/I/B1pppR4gVKL._CLa%7C2140%2C2000%7C61jhvWSmZ1L.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UY1000_.png"
   },
@@ -47,17 +50,37 @@ const mockProducts : Product[] = [
     "imageUrl": "https://m.media-amazon.com/images/I/61fHbfQpq-L._AC_SL1500_.jpg"
   }]
 
-  function App() {
-    const [products] = useState<Product[]>(mockProducts);
-    
-    return (
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className=" mx-auto container flex-grow">
-          <ProductList products={products} onAddToCart={() => {}} />
-        </main>
-      </div>
-    );
+function App() {
+  const notify = (productName: string, exists: boolean, quantity?: number) => exists ?  toast.info("You now have " + quantity + " " + productName + " in cart") :  toast.success(productName + " - Added to cart successfully!");
+
+  const [products] = useState<Product[]>(mockProducts);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartCount, setCartCount] = useState<number>(0);
+
+  const handleAddToCart = (product : Product)=>{
+    const existingIndex = cart.findIndex( (item) => item.id === product.id); 
+    if(existingIndex === -1){
+      setCart([...cart, { ...product, quantity: 1 }]);
+      setCartCount(cartCount + 1);
+      notify(product.name, false);
+      
+    }else{
+      cart[existingIndex].quantity += 1;
+      setCart(cart);
+      setCartCount(cartCount + 1);
+      notify(product.name, true, cart[existingIndex].quantity);
+    }
   }
   
-  export default App;
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header cartCount={cartCount} />
+      <main className=" mx-auto container flex-grow">
+        <ProductList products={products} onAddToCart={(product) => handleAddToCart(product)} cart={cart} />
+          <ToastContainer position="bottom-right"/>
+      </main>
+    </div>
+  );
+}
+
+export default App;
