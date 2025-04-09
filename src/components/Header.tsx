@@ -46,9 +46,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 function Header() {
-  const { cart } = useCart();
-  const cartCount = cart.length;
-
+  const { cartCount } = useCart();
+  console.log("dskh", cartCount);
   return (
     <>
       <header className="w-full bg-indigo-600 text-white shadow-lg">

@@ -5,8 +5,9 @@ import CartItem from "../types/CartItem";
 
 // Define the shape of your context
 interface CartContextType {
-  cart: Product[];
+  cart: CartItem[];
   addToCart: (product: Product) => void;
+  cartCount: number;
 }
 
 // Create the context
@@ -35,11 +36,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setCart(cart);
       setCartCount(cartCount + 1);
       notify(product.name, true, cart[existingIndex].quantity);
+      
     }
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, cartCount }}>
       {children}
     </CartContext.Provider>
   );

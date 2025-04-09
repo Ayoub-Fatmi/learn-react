@@ -28,7 +28,7 @@ function useFetch<T>(url: string) {
   useEffect(() => {
     setTimeout(() => {
       fetchData();
-    }, 5000);
+    }, 2000);
     // fetchData();
   }, [fetchData]);
 
