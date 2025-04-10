@@ -45,19 +45,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const existingIndex = cart.findIndex((item) => item.id === id);
     if (existingIndex !== -1) {
       if (type === "remove") {
-        console.log(cart[existingIndex].quantity);
         setCartCount(cartCount - cart[existingIndex].quantity);
         cart.splice(existingIndex, 1);
         setCart(cart);
-      } else if (type === "inc") {
+      } else if (type === "increase") {
         cart[existingIndex].quantity += 1;
         setCart(cart);
         setCartCount(cartCount + 1);
-      } else if (type === "dec") {
+      } else if (type === "decrease") {
         if (cart[existingIndex].quantity > 1) {
           cart[existingIndex].quantity -= 1;
           setCart(cart);
           setCartCount(cartCount - 1);
+        }else if(cart[existingIndex].quantity === 1){
+          setCartCount(cartCount - cart[existingIndex].quantity);
+          cart.splice(existingIndex, 1);
+          setCart(cart);
         }
       }
     }

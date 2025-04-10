@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Product from "../types/Product";
+import { useCart } from "../context/CartContext";
 
 interface ProductCardProps {
   product: Product;
@@ -14,8 +15,10 @@ function ProductCard({
   isInCart,
   cartQuantity,
 }: ProductCardProps) {
+  const { changeQuantity } = useCart();
+
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const maxDescriptionLength = 50;
+  const maxDescriptionLength = 80;
 
   const truncatedDescription =
     product.description.length > maxDescriptionLength
@@ -28,12 +31,10 @@ function ProductCard({
     >
       {showFullDescription && (
         <div
-          className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10"
-          onClick={() => setShowFullDescription(false)} 
+          className="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-10 cursor-pointer"
+          onClick={() => setShowFullDescription(false)}
         >
-          <div
-            className="bg-white p-6 rounded-lg shadow-lg max-w-[90%] max-h-[80%] overflow-auto"
-          >
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-[90%] max-h-[80%] overflow-auto">
             <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
             <p className="text-gray-700">{product.description}</p>
           </div>
@@ -58,30 +59,122 @@ function ProductCard({
           </p>
         </div>
 
-        {/* <div className="flex justify-between"> */}
-          <p className="right-0 text-lg font-bold mb-4">${product.price.toFixed(2)}</p>
+        <p className="right-0 text-lg font-bold mb-4">
+          ${product.price.toFixed(2)}
+        </p>
 
-          <button
-            onClick={() => onAddToCart(product)}
-            className={`flex items-center justify-center gap-2 w-full py-2 px-4 rounded transition-colors ${
-              isInCart
-                ? " border-2 border-green-500 bg-green-500 hover:bg-green-600 text-white cursor-default"
-                : "border-2 border-indigo-600 bg-indigo-600 hover:bg-indigo-700 text-white"
-            }`}
-          > 
-            {isInCart ? (
+        <button
+          onClick={() => !isInCart && onAddToCart(product)}
+          className={`flex items-center justify-center gap-2 w-full py-2 px-4 rounded transition-colors ${
+            isInCart
+              ? "border-2 border-green-500 bg-green-50 hover:bg-green-100 text-green-800"
+              : "border-2 border-indigo-600 bg-indigo-600 hover:bg-indigo-700 text-white"
+          }`}
+        >
+          {isInCart ? (
+            <div className="flex items-center gap-3 w-full justify-between">
+              {/* Quantity controls */}
               <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                {`${cartQuantity} in cart • add 1 more`}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    changeQuantity(product.id, "decrease");
+                  }}
+                  className="w-6 h-6 rounded-full bg-gray-400 text-white flex items-center justify-center hover:bg-gray-600"
+                  title="Remove 1 "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+
+                <span className="font-medium">{cartQuantity}</span>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    changeQuantity(product.id, "increase");
+                  }}
+                  className="w-6 h-6 rounded-full bg-gray-400 text-white flex items-center justify-center hover:bg-gray-600"
+                  title="Add 1 more"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
               </div>
-            ) : (
-              <>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                Add to Cart
-              </>
-            )}
-          </button>
-        {/* </div> */}
+
+              {/* Status text */}
+              <span className="text-sm">In Cart</span>
+
+              {/* Remove button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeQuantity(product.id, "remove");
+                }}
+                className="text-red-500 hover:text-red-700"
+                title="Remove from cart"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          ) : (
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="8" cy="21" r="1"></circle>
+                <circle cx="19" cy="21" r="1"></circle>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+              </svg>
+              Add to Cart
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

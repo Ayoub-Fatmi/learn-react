@@ -22,8 +22,8 @@ function CartList({ cart }: CartListProps) {
           <CartItemCard
             key={item.id}
             item={item}
-            onIncrease={() => changeQuantity(item.id, "inc")}
-            onDecrease={() => changeQuantity(item.id, "dec")}
+            onIncrease={() => changeQuantity(item.id, "increase")}
+            onDecrease={() => changeQuantity(item.id, "decrease")}
             onRemove={() => changeQuantity(item.id, "remove")}
           />
         ))}
