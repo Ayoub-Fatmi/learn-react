@@ -8,6 +8,12 @@ interface ProductCardProps {
   isInCart?: boolean;
   cartQuantity?: number;
 }
+const categoryStyles : Record<string, string> = {
+  "T-Shirts": "bg-blue-500",
+  "Hoodies": "bg-purple-500",
+  "Accessories": "bg-yellow-500",
+  "Headwear": "bg-red-500",
+};
 
 function ProductCard({
   product,
@@ -17,6 +23,7 @@ function ProductCard({
 }: ProductCardProps) {
   const { changeQuantity } = useCart();
 
+  console.log(product.category);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const maxDescriptionLength = 80;
 
@@ -59,9 +66,14 @@ function ProductCard({
           </p>
         </div>
 
-        <p className="right-0 text-lg font-bold mb-4">
-          ${product.price.toFixed(2)}
-        </p>
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-lg font-bold">${product.price.toFixed(2)}</p>
+          <div className={`py-1 px-2 rounded-full text-white text-xs font-medium ${
+            categoryStyles[product.category] || "bg-gray-500"
+          }`}>
+            {product.category || "No Category"}
+          </div>
+        </div>
 
         <button
           onClick={() => !isInCart && onAddToCart(product)}
@@ -73,7 +85,6 @@ function ProductCard({
         >
           {isInCart ? (
             <div className="flex items-center gap-3 w-full justify-between">
-              {/* Quantity controls */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={(e) => {
@@ -125,10 +136,8 @@ function ProductCard({
                 </button>
               </div>
 
-              {/* Status text */}
               <span className="text-sm">In Cart</span>
 
-              {/* Remove button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();

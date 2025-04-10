@@ -19,7 +19,7 @@ function CartItemCard({ item, onIncrease, onDecrease, onRemove }: CartItemProps)
         />
         <div>
           <h3 className="font-medium">{item.name}</h3>
-          <p className="text-gray-500 text-sm">Category</p>
+          <p className="text-gray-500 text-sm">{item.category}</p>
         </div>
       </div>
 
