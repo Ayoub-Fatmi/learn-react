@@ -8,6 +8,7 @@ interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product) => void;
   cartCount: number;
+  changeQuantity: (id: string, type: string) => void;
 }
 
 // Create the context
@@ -40,8 +41,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const changeQuantity = (id: string, type: string) => {
+    const existingIndex = cart.findIndex((item) => item.id === id);
+    if (existingIndex !== -1) {
+      if (type === "remove") {
+        console.log(cart[existingIndex].quantity);
+        setCartCount(cartCount - cart[existingIndex].quantity);
+        cart.splice(existingIndex, 1);
+        setCart(cart);
+      } else if (type === "inc") {
+        cart[existingIndex].quantity += 1;
+        setCart(cart);
+        setCartCount(cartCount + 1);
+      } else if (type === "dec") {
+        if (cart[existingIndex].quantity > 1) {
+          cart[existingIndex].quantity -= 1;
+          setCart(cart);
+          setCartCount(cartCount - 1);
+        }
+      }
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, cartCount }}>
+    <CartContext.Provider value={{ cart, addToCart, cartCount, changeQuantity }}>
       {children}
     </CartContext.Provider>
   );
