@@ -12,8 +12,8 @@ A modern React learning project designed to help developers master React 19 thro
 - ESLint configured for React projects
 - Testing setup with Vitest and React Testing Library
 ![Store Screenshot](./src/assets/ProductsPage.png)
-![Store Screenshot](./src/assets/ProductsPage.png)
-![Store Screenshot](./src/assets/ProductsPage.png)
+![Store Screenshot](./src/assets/ProductDescription.png)
+![Store Screenshot](./src/assets/CartPage.png)
 
 ## Getting Started
 
