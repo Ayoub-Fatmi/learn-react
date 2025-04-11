@@ -10,7 +10,6 @@ interface CartItemProps {
 function CartItemCard({ item, onIncrease, onDecrease, onRemove }: CartItemProps) {
   return (
     <div className="grid grid-cols-12 p-4 border-b items-center">
-      {/* Product Info */}
       <div className="col-span-12 md:col-span-5 flex items-center space-x-4">
         <img
           src={item.imageUrl}
@@ -23,16 +22,14 @@ function CartItemCard({ item, onIncrease, onDecrease, onRemove }: CartItemProps)
         </div>
       </div>
 
-      {/* Price */}
       <div className="col-span-4 md:col-span-2 mt-4 md:mt-0">
         <span className="md:hidden font-medium mr-2">Price:</span>
         <span>${item.price.toFixed(2)}</span>
       </div>
 
-      {/* Quantity */}
       <div className="col-span-4 md:col-span-3 mt-4 md:mt-0">
-        <span className="md:hidden font-medium mr-2">Qty:</span>
         <div className="flex items-center justify-center space-x-2">
+          <span className="md:hidden font-medium mr-2">Qty:</span>
           <button 
             onClick={onDecrease}
             className="w-8 h-8 border rounded flex items-center justify-center hover:bg-gray-100"
@@ -55,7 +52,6 @@ function CartItemCard({ item, onIncrease, onDecrease, onRemove }: CartItemProps)
         </div>
       </div>
 
-      {/* Subtotal */}
       <div className="col-span-4 md:col-span-2 mt-4 md:mt-0 text-right">
         <span className="md:hidden font-medium mr-2">Subtotal:</span>
         <span className="font-medium">

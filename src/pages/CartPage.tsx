@@ -6,7 +6,6 @@ import OrderSummary from "../components/OrderSummary";
 function CartPage() {
   const { cart, cartCount } = useCart();
 
-  // Calculate total price
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0

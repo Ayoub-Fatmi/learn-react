@@ -40,6 +40,7 @@ function ProductCard({
         <div
           className="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-10 cursor-pointer"
           onClick={() => setShowFullDescription(false)}
+          title="Close description"
         >
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-[90%] max-h-[80%] overflow-auto">
             <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
@@ -60,6 +61,7 @@ function ProductCard({
             <button
               onClick={() => setShowFullDescription(true)}
               className="text-left w-full"
+              title="Show full description"
             >
               {truncatedDescription}
             </button>
