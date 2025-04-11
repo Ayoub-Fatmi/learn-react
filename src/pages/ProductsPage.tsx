@@ -46,10 +46,13 @@ function ProductsPage() {
         return (
 
             <main className=" h-screen flex flex-grow justify-center items-center">
-              <div className="error-container">
-                <div>Error: {error}</div>
-                <button onClick={refetch} className="retry-button">
-                  Retry
+              <div className="p-5 error-container text-center bg-gray-100 rounded">
+                <div className=" mb-4 text-lg text-red-500">There was an error fetching the products</div>
+                <button
+                  onClick={refetch}
+                  className="retry-button w-32 text-white bg-blue-700 focus:ring-4 cursor-default focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center"
+                >
+                    Retry
                 </button>
               </div>
             </main>
